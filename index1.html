@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend Developer - CodeAnt</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: #333;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: #2C3E50;
+            color: #ECF0F1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+
+        .sidebar .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .sidebar .menu ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar .menu li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar .menu li i {
+            margin-right: 10px;
+        }
+
+        .sidebar .menu a {
+            text-decoration: none;
+            color: #ECF0F1;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .sidebar .menu a:hover {
+            color: #1ABC9C;
+        }
+
+        .sidebar-footer {
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .sidebar-footer a {
+            color: #ECF0F1;
+            text-decoration: none;
+        }
+
+        .sidebar-footer a:hover {
+            color: #1ABC9C;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            background-color: #F4F6F8;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .header button {
+            background-color: #1ABC9C;
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .header button:hover {
+            background-color: #16A085;
+        }
+
+        .repositories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .repository {
+            background-color: #FFFFFF;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .repository h2 {
+            margin: 0 0 10px;
+            font-size: 20px;
+            color: #2C3E50;
+        }
+
+        .repository p {
+            margin: 0;
+            font-size: 14px;
+            color: #7F8C8D;
+        }
+
+        .repository .actions {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .repository .actions button {
+            background-color: #3498DB;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+
+        .repository .actions button:hover {
+            background-color: #2980B9;
+        }
+
+        .repository .delete {
+            background-color: #E74C3C;
+        }
+
+        .repository .delete:hover {
+            background-color: #C0392B;
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: #1ABC9C;
+            color: white;
+            padding: 5px 10px;
+            font-size: 12px;
+            border-radius: 3px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0.3s, opacity 0.3s;
+        }
+
+        .repository:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">CodeAnt AI</div>
+            <nav class="menu">
+                <ul>
+                    <li><i class="fas fa-folder"></i><a href="#">Repositories</a></li>
+                    <li><i class="fas fa-code"></i><a href="#">AI Code Review</a></li>
+                    <li><i class="fas fa-shield-alt"></i><a href="#">Cloud Security</a></li>
+                    <li><i class="fas fa-question-circle"></i><a href="#">How to Use</a></li>
+                </ul>
+            </nav>
+            <footer class="sidebar-footer">
+                <a href="#">Support</a> |
+                <a href="#">Logout</a>
+            </footer>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <h1>Repositories</h1>
+                <button class="refresh">Refresh All</button>
+                <button class="add-repo">Add Repository</button>
+            </header>
+            <section class="repositories" id="repositories">
+                <div class="repository">
+                    <h2>design-system</h2>
+                    <p>React | 7320 KB | Updated 1 day ago</p>
+                    <div class="tooltip">Click to edit details</div>
+                    <div class="actions">
+                        <button class="edit">Edit</button>
+                        <button class="delete">Delete</button>
+                    </div>
+                </div>
+                <div class="repository">
+                    <h2>codeant-ci-app</h2>
+                    <p>JavaScript | 5871 KB | Updated 2 days ago</p>
+                    <div class="tooltip">Click to edit details</div>
+                    <div class="actions">
+                        <button class="edit">Edit</button>
+                        <button class="delete">Delete</button>
+                    </div>
+                </div>
+                <div class="repository">
+                    <h2>analytics-dashboard</h2>
+                    <p>Python | 4521 KB | Updated 5 days ago</p>
+                    <div class="tooltip">Click to edit details</div>
+                    <div class="actions">
+                        <button class="edit">Edit</button>
+                        <button class="delete">Delete</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script>
+        // Simulate refreshing all repositories
+        document.querySelector('.refresh').addEventListener('click', () => {
+            const repositories = document.querySelectorAll('.repository');
+            repositories.forEach(repo => {
+                const updatedTime = new Date().toLocaleString();
+                repo.querySelector('p').textContent = `Updated just now | ${updatedTime}`;
+            });
+            alert('All repositories refreshed!');
+        });
+    
+        // Simulate editing repository details (name and description)
+        document.querySelectorAll('.edit').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const repo = e.target.closest('.repository');
+                const currentName = repo.querySelector('h2').textContent;
+                const currentDesc = repo.querySelector('p').textContent;
+    
+                const newName = prompt('Enter new repository name:', currentName);
+                const newDesc = prompt('Enter new repository description (e.g., JavaScript | 1234 KB | Updated 1 day ago):', currentDesc);
+    
+                if (newName) {
+                    repo.querySelector('h2').textContent = newName;
+                }
+                if (newDesc) {
+                    repo.querySelector('p').textContent = newDesc;
+                }
+                alert('Repository details updated!');
+            });
+        });
+    
+        // Add new repository functionality
+        document.querySelector('.add-repo').addEventListener('click', () => {
+            const newRepo = document.createElement('div');
+            newRepo.className = 'repository';
+            newRepo.innerHTML = `
+                <h2>new-repo</h2>
+                <p>JavaScript | 1234 KB | Updated just now</p>
+                <div class="tooltip">Click to edit details</div>
+                <div class="actions">
+                    <button class="edit">Edit</button>
+                    <button class="delete">Delete</button>
+                </div>
+            `;
+            document.getElementById('repositories').appendChild(newRepo);
+    
+            // Add event listeners to new buttons
+            newRepo.querySelector('.edit').addEventListener('click', (e) => {
+                const repo = e.target.closest('.repository');
+                const currentName = repo.querySelector('h2').textContent;
+                const currentDesc = repo.querySelector('p').textContent;
+    
+                const newName = prompt('Enter new repository name:', currentName);
+                const newDesc = prompt('Enter new repository description (e.g., JavaScript | 1234 KB | Updated 1 day ago):', currentDesc);
+    
+                if (newName) {
+                    repo.querySelector('h2').textContent = newName;
+                }
+                if (newDesc) {
+                    repo.querySelector('p').textContent = newDesc;
+                }
+                alert('Repository details updated!');
+            });
+    
+            newRepo.querySelector('.delete').addEventListener('click', (e) => {
+                const repo = e.target.closest('.repository');
+                repo.remove();
+                alert('Repository deleted!');
+            });
+        });
+    
+        // Add delete functionality to existing repositories
+        document.querySelectorAll('.delete').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const repo = e.target.closest('.repository');
+                repo.remove();
+                alert('Repository deleted!');
+            });
+        });
+    </script>
+    
+</body>
+</html>
